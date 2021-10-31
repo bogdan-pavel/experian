@@ -1,9 +1,8 @@
 package com.credit.score.api;
 
-import com.credit.score.model.CreditScore;
 import com.credit.score.request.CreditScoreRequest;
 import com.credit.score.service.CreditScoreService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -34,19 +32,15 @@ public class CreditScoreController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-
-        errors.put("error", ex.getBindingResult().getAllErrors().stream()
+        var errorMessage = ex.getBindingResult().getAllErrors().stream()
                 .map(error -> ((FieldError) error).getField() + " " + error.getDefaultMessage()).sorted()
-                .collect(Collectors.joining(",")));
-        return errors;
+                .collect(Collectors.joining(","));
+        return Map.of("error", errorMessage);
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Map<String, String> handleException(HttpMessageNotReadableException exception) {
-        Map<String, String> errors = new HashMap<>();
-        errors.put("error", "Invalid field type");
-        return errors;
+        return Map.of("error", "Invalid field type");
     }
 }
