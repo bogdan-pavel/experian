@@ -27,7 +27,7 @@ class CreditScoreControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void whenPostInvalid_thenBadResponse() throws Exception {
+    public void whenPostInvalid_thenBadRequest() throws Exception {
         var creditScoreRequestJson = createCreditScoreRequestJson(CreditScoreRequest.builder().build());
         var error = "company_name must not be empty,directors_count must not be null,last_updated must not be null,msg_id must not be null,registration_date must not be null,score must not be null";
 
@@ -36,7 +36,7 @@ class CreditScoreControllerTest {
 
 
     @Test
-    public void whenPostInvalidMsgID_thenBadResponse() throws Exception {
+    public void whenPostInvalidMsgID_thenBadRequest() throws Exception {
         var creditScoreRequest = TestUtils.createRequest(Timestamp.from(Instant.now()));
         creditScoreRequest.setMsg_id(BigInteger.valueOf(-1));
         var creditScoreRequestJson = createCreditScoreRequestJson(creditScoreRequest);
@@ -45,7 +45,7 @@ class CreditScoreControllerTest {
     }
 
     @Test
-    public void whenPostEmptyCompanyName_thenBadResponse() throws Exception {
+    public void whenPostEmptyCompanyName_thenBadRequest() throws Exception {
         var creditScoreRequest = TestUtils.createRequest(Timestamp.from(Instant.now()));
         creditScoreRequest.setCompany_name("");
         var creditScoreRequestJson = createCreditScoreRequestJson(creditScoreRequest);
@@ -54,7 +54,7 @@ class CreditScoreControllerTest {
     }
 
     @Test
-    public void whenPostInvalidDate_thenBadResponse() throws Exception {
+    public void whenPostInvalidDate_thenBadRequest() throws Exception {
         var creditScoreRequest = TestUtils.createRequest(Timestamp.from(Instant.now()));
         creditScoreRequest.setRegistration_date(Timestamp.valueOf("2022-01-01 01:01:01"));
         var creditScoreRequestJson = createCreditScoreRequestJson(creditScoreRequest);
@@ -63,14 +63,14 @@ class CreditScoreControllerTest {
     }
 
     @Test
-    public void whenPostInvalidDateFormat_thenBadResponse() throws Exception {
+    public void whenPostInvalidDateFormat_thenBadRequest() throws Exception {
         var creditScoreRequestJson = "{\"registration_date\":\"2021-10-10 11:11:11.111Z\"}";
 
         postAssert(creditScoreRequestJson, "Invalid field type");
     }
 
     @Test
-    public void whenPostInvalidFieldTypeFormat_thenBadResponse() throws Exception {
+    public void whenPostInvalidFieldTypeFormat_thenBadRequest() throws Exception {
         var creditScoreRequestJson = "{\"score\":\"invalidScore\"}";
 
         postAssert(creditScoreRequestJson, "{\"error\":\"Invalid field type\"}");

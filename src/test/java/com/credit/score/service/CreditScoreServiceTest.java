@@ -28,7 +28,7 @@ class CreditScoreServiceTest {
     CreditScoreService creditScoreService;
 
     @Test
-    public void whenCreateOrUpdateCreditScore_thenShouldReturnCreditScore() {
+    public void whenCreateOrUpdateCreditScore_thenReturnCreditScore() {
         var dateTime = Timestamp.from(Instant.now());
         var creditScoreRequest = TestUtils.createRequest(dateTime);
 
@@ -40,7 +40,7 @@ class CreditScoreServiceTest {
     }
 
     @Test
-    public void whenSaveOrUpdateCannotBePerformed_thenThrowPersistenceException() {
+    public void whenSaveOrUpdateCannotBePerformed_thenThrowException() {
         when(creditScoreRepoMock.save(any(CreditScoreEntity.class))).thenThrow(PersistenceException.class);
 
         Assertions.assertThrows(PersistenceException.class, () ->

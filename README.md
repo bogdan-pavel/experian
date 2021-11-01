@@ -19,6 +19,11 @@ POST - localhost:8080/experian/creditScores
 }
 ```
 
+***In memory h2 database link***
+http://localhost:8080/experian/h2/
+driver class: org.h2.Driver
+jdbc url: jdbc:h2:mem:testdb
+username: sa
 ***TODO***
 
 
